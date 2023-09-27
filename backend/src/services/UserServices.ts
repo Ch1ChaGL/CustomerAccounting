@@ -3,9 +3,9 @@ import { User } from '../model/User';
 interface IUserServices {
   create(user: User): Promise<void>;
   update(user: User): Promise<void>;
-  delete(userId: number): Promise<void>;
-  getById(userId: number): Promise<User>;
-  getAll(): Promise<User[]>;
+  delete(userId: string): Promise<void>;
+  getById(userId: string): Promise<User | null>;
+  getAll(): Promise<User[] | null>;
 }
 
 class UserServices implements IUserServices {
@@ -16,17 +16,20 @@ class UserServices implements IUserServices {
       throw new Error('Failed to create user');
     }
   }
-  update(user: User): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(user: User): Promise<void> {
+    const UserID = user.UserID;
+    await User.update({ ...user }, { where: { UserID } });
   }
-  delete(userId: number): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(userId: string): Promise<void> {
+    await User.destroy({ where: { UserID: userId } });
   }
-  getById(userId: number): Promise<User> {
-    throw new Error('Method not implemented.');
+  async getById(userId: string): Promise<User | null> {
+    const user = await User.findByPk(userId);
+    return user;
   }
-  getAll(): Promise<User[]> {
-    throw new Error('Method not implemented.');
+  async getAll(): Promise<User[] | null> {
+    const users = await User.findAll();
+    return users;
   }
 }
 

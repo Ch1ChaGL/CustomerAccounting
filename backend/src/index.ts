@@ -1,7 +1,8 @@
 import express, { Application, Request, Response } from 'express';
 import Database from './config/database';
-import UserRouter from './router/UserRouter';
+import IndexRouter from './router/index';
 import cors from 'cors';
+import { ErrorHandlingMiddleware } from './middleware/ErrorHandlingMiddleware';
 class App {
   public app: Application;
 
@@ -10,6 +11,9 @@ class App {
     this.databaseSync();
     this.plugins();
     this.routes();
+
+    //Обработка ошибки
+    this.errorHandler();
   }
 
   protected plugins(): void {
@@ -17,20 +21,21 @@ class App {
     this.app.use(cors());
   }
 
+  protected errorHandler(): void {
+    this.app.use(ErrorHandlingMiddleware);
+  }
+
   protected databaseSync(): void {
     const db = new Database();
-    db.sequelize?.sync();
+    db.sequelize?.sync({ alter: true });
   }
 
   protected routes(): void {
-    this.app.route('/').get((req: Request, res: Response) => {
-      res.send('welocome home');
-    });
-    this.app.use('/api/user', UserRouter);
+    this.app.use('/api', IndexRouter);
   }
 }
 
-const port: number = 5000;
+const port: number = Number(process.env.PORT) || 5000;
 const app = new App().app;
 
 app.listen(port, () => {
