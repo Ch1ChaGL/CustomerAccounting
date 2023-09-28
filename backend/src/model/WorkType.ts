@@ -24,7 +24,7 @@ export class WorkType extends Model {
     primaryKey: true,
     field: WorkType.WORKTYPE_ID,
   })
-  StatusTypeID!: string;
+  WorkTypeID!: string;
 
   @Column({
     type: DataType.STRING(255),
