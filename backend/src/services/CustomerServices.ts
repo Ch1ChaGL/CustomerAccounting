@@ -1,30 +1,27 @@
 import { Customer } from './../model/Customer';
 
 interface ICustomerServices {
-  create(customer: Customer): Promise<void>;
-  update(customer: Customer): Promise<void>;
-  delete(customerId: string): Promise<void>;
+  create(customer: Customer): Promise<Customer>;
+  update(customer: Customer): Promise<number[]>;
+  delete(customerId: string): Promise<number>;
   getById(customerId: string): Promise<Customer | null>;
   getAll(): Promise<Customer[] | null>;
 }
 
-/**
- * TODO Сделать выдачу картинок и все остальное
- */
 class UserServices implements ICustomerServices {
-  async create(customer: Customer): Promise<void> {
+  async create(customer: Customer): Promise<Customer> {
     try {
-      await Customer.create({ ...customer });
+      return await Customer.create({ ...customer });
     } catch (error) {
       throw new Error('Failed to create customer');
     }
   }
-  async update(customer: Customer): Promise<void> {
-    // const UserID = customer.CustomerID;
-    // await User.update({ ...user }, { where: { UserID } });
+  async update(customer: Customer): Promise<number[]> {
+    const CustomerID = customer.CustomerID;
+    return await Customer.update({ ...customer }, { where: { CustomerID } });
   }
-  async delete(customerId: string): Promise<void> {
-    await Customer.destroy({ where: { CustomerID: customerId } });
+  async delete(customerId: string): Promise<number> {
+    return await Customer.destroy({ where: { CustomerID: customerId } });
   }
   async getById(customerId: string): Promise<Customer | null> {
     const customer = await Customer.findByPk(customerId);

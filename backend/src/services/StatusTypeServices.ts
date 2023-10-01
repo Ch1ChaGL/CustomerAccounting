@@ -1,27 +1,27 @@
 import { StatusType } from '../model/StatusType';
 
 interface IStatusTypeServices {
-  create(statusType: StatusType): Promise<void>;
-  update(statusType: StatusType): Promise<void>;
-  delete(statusTypeId: string): Promise<void>;
+  create(statusType: StatusType): Promise<StatusType>;
+  update(statusType: StatusType): Promise<number[]>;
+  delete(statusTypeId: string): Promise<number>;
   getById(statusTypeId: string): Promise<StatusType | null>;
   getAll(): Promise<StatusType[] | null>;
 }
 
 class StatusTypeServices implements IStatusTypeServices {
-  async create(statusType: StatusType): Promise<void> {
+  async create(statusType: StatusType): Promise<StatusType> {
     try {
-      await StatusType.create({ ...statusType });
+      return await StatusType.create({ ...statusType });
     } catch (error) {
       throw new Error('Failed to create statusType');
     }
   }
-  async update(statusType: StatusType): Promise<void> {
+  async update(statusType: StatusType): Promise<number[]> {
     const StatusTypeID = statusType.StatusTypeID;
-    await StatusType.update({ ...statusType }, { where: { StatusTypeID } });
+    return await StatusType.update({ ...statusType }, { where: { StatusTypeID } });
   }
-  async delete(statusTypeId: string): Promise<void> {
-    await StatusType.destroy({ where: { StatusTypeID: statusTypeId } });
+  async delete(statusTypeId: string): Promise<number> {
+    return await StatusType.destroy({ where: { StatusTypeID: statusTypeId } });
   }
   async getById(statusTypeId: string): Promise<StatusType | null> {
     const statusType = await StatusType.findByPk(statusTypeId);

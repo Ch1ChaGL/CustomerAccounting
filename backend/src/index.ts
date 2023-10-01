@@ -2,7 +2,9 @@ import express, { Application, Request, Response } from 'express';
 import Database from './config/database';
 import IndexRouter from './router/index';
 import cors from 'cors';
+import fileUpload from 'express-fileupload';
 import { ErrorHandlingMiddleware } from './middleware/ErrorHandlingMiddleware';
+import path from 'path';
 class App {
   public app: Application;
 
@@ -11,13 +13,13 @@ class App {
     this.databaseSync();
     this.plugins();
     this.routes();
-
-    //Обработка ошибки
     this.errorHandler();
   }
 
   protected plugins(): void {
     this.app.use(express.json());
+    this.app.use(express.static(path.resolve(__dirname, '..', 'static')));
+    this.app.use(fileUpload({}));
     this.app.use(cors());
   }
 

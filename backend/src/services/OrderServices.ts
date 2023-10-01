@@ -1,9 +1,9 @@
 import { Order } from '../model/Order';
 
 interface IOrderServices {
-  create(order: Order): Promise<void>;
-  update(order: Order): Promise<void>;
-  delete(OrderID: string): Promise<void>;
+  create(order: Order): Promise<Order>;
+  update(order: Order): Promise<number[]>;
+  delete(OrderID: string): Promise<number>;
   getByOrderID(OrderID: string): Promise<Order | null>;
   getByCustomerID(CustomerID: string): Promise<Order[] | null>;
   getByUserID(UserID: string): Promise<Order[] | null>;
@@ -19,19 +19,19 @@ class StatusTypeServices implements IOrderServices {
     const orders = await Order.findAll({ where: { UserID } });
     return orders;
   }
-  async create(order: Order): Promise<void> {
+  async create(order: Order): Promise<Order> {
     try {
-      await Order.create({ ...order });
+      return await Order.create({ ...order });
     } catch (error) {
       throw new Error('Failed to create order');
     }
   }
-  async update(order: Order): Promise<void> {
+  async update(order: Order): Promise<number[]> {
     const OrderID = order.OrderID;
-    await Order.update({ ...order }, { where: { OrderID } });
+    return await Order.update({ ...order }, { where: { OrderID } });
   }
-  async delete(OrderID: string): Promise<void> {
-    await Order.destroy({ where: { OrderID } });
+  async delete(OrderID: string): Promise<number> {
+    return await Order.destroy({ where: { OrderID } });
   }
   async getByOrderID(OrderID: string): Promise<Order | null> {
     const statusType = await Order.findByPk(OrderID);
