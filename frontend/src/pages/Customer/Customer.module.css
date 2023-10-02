@@ -1,0 +1,11 @@
+/* Ваши стили для контейнера */
+.clientСontainer {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(500px, 1fr)
+  ); /* Автоматически создает столбцы с минимальной шириной 200px */
+  gap: 20px; /* Отступ между карточками */
+  padding: 20px; /* Внутренний отступ контейнера */
+  border-radius: 10px; /* Скругленные углы контейнера */
+}

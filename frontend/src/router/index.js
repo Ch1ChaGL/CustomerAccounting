@@ -1,5 +1,5 @@
-import Auth from '../pages/Auth';
-import Customers from '../pages/Customers';
+import Auth from '../pages/Auth/Auth';
+import Customers from '../pages/Customer/Customers';
 import Orders from '../pages/Orders';
 import WorkType from '../pages/WorkType';
 import {
