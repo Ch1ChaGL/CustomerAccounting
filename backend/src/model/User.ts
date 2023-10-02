@@ -1,4 +1,10 @@
-import { Model, Table, Column, DataType, PrimaryKey } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  PrimaryKey,
+} from 'sequelize-typescript';
 
 @Table({
   tableName: User.USER_TABLE_NAME,
@@ -13,23 +19,12 @@ export class User extends Model {
 
   @PrimaryKey
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     primaryKey: true,
     field: User.USER_ID,
+    autoIncrement: true,
   })
-  UserID!: string;
-
-  @Column({
-    type: DataType.STRING(255),
-    field: User.USER_FIRSTNAME,
-  })
-  FirstName!: string;
-
-  @Column({
-    type: DataType.STRING(255),
-    field: User.USER_LASTNAME,
-  })
-  LastName!: string;
+  UserID!: number;
 
   @Column({
     type: DataType.STRING(255),
